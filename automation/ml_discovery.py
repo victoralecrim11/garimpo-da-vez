@@ -150,10 +150,23 @@ def search_listings(query: str, *, category_id: str = "", limit: int = 15,
         price = obj.get("price")
         if not isinstance(price, (float, int)) or isinstance(price, bool) or price < 0:
             price = None
+        thumbnail = obj.get("thumbnail") or ""
+        # Prévia oficial somente de host de mídia permitido; não baixa nem concede licença.
+        if isinstance(thumbnail, str) and thumbnail:
+            from urllib.parse import urlsplit
+            parts = urlsplit(thumbnail)
+            hostname = (parts.hostname or "").lower()
+            if not (parts.scheme == "https" and
+                    (hostname == "mlstatic.com" or hostname.endswith(".mlstatic.com")) and
+                    not parts.username and not parts.password and parts.port in (None, 443)):
+                thumbnail = ""
+        else:
+            thumbnail = ""
         found.append({
             "id": item_id, "title": title,
             "category_id": cat_id, "permalink": link,
             "price": price, "currency": obj.get("currency_id") or "",
+            "thumbnail": thumbnail,
             "source": "mercadolivre_official_search",
         })
         seen.add(item_id)
