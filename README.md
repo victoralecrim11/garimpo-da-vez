@@ -1,10 +1,10 @@
 # Garimpo da Vez — site público
 
-Landing page estática de curadoria de conteúdos e recomendações de produtos, hospedada pelo GitHub Pages. Marca pública substitui a antiga apresentação de ferramenta interna **AffiliatePilot AI**.
+Landing page estática de curadoria de conteúdos e recomendações de produtos, hospedada na Netlify. Marca pública substitui a antiga apresentação de ferramenta interna **AffiliatePilot AI**.
 
 ## Site público e estrutura
 
-- Site atual: https://victoralecrim11.github.io/garimpo-da-vez/
+- Site oficial: https://garimpo-da-vez.netlify.app/
 - `index.html`: apresentação, categorias, curadoria e transparência.
 - `privacy/index.html`: privacidade aplicável à página estática atual.
 - `assets/styles.css`: identidade visual e responsividade.
@@ -18,11 +18,19 @@ Nome de exibição: **Garimpo da Vez | Achadinhos**. Nome de usuário confirmado
 
 Link oficial informado pelo responsável e configurado em `index.html`: https://www.pinterest.com/garimpodavez_/. Se o perfil mudar de arroba, atualizar também o link do botão no site.
 
-## Publicação no GitHub Pages
+## Publicação na Netlify
 
-Repositório atual: `victoralecrim11/garimpo-da-vez`, branch `main`. Conferir em Settings → Pages se a fonte de publicação utiliza a branch `main` e a pasta `/(root)`. Os caminhos HTML/CSS são relativos e funcionam neste subdiretório.
+- Site oficial: https://garimpo-da-vez.netlify.app/
+- Repositório: `victoralecrim11/garimpo-da-vez`, branch `main`.
+- Configuração versionada: `netlify.toml`; pasta publicada: `dist/`.
+- Deploy automático após `git push` na `main`, desde que a conexão GitHub↔Netlify esteja ativa.
+- Apenas `index.html`, `assets/`, `privacy/` e `oauth/` entram no deploy; `automation/` permanece fora da área pública.
+- Antes de usar o OAuth Mercado Livre, cadastre exatamente `https://garimpo-da-vez.netlify.app/oauth/callback/` no DevCenter; o script Python deve usar a mesma URI.
+- Atualize o campo Site do Pinterest Business e os canais cadastrados no programa de afiliados com o endereço oficial.
 
-**Migração de nome concluída:** o repositório foi renomeado para `garimpo-da-vez` e a URL canônica (`og:url`) aponta para o novo endereço. Confirmar o conteúdo efetivamente publicado em `https://victoralecrim11.github.io/garimpo-da-vez/` e `https://victoralecrim11.github.io/garimpo-da-vez/privacy/` após o deploy. O antigo endereço `https://victoralecrim11.github.io/affiliatepilot-ai/` não possui redirecionamento garantido e foi observado retornando 404 após a renomeação. Se for necessário preservar acessos antigos, um repositório separado com o nome `affiliatepilot-ai` pode hospedar um redirecionamento HTML para o novo endereço. Atualizar as URLs cadastradas no Pinterest e no programa de afiliados.
+### Endereço anterior (legado)
+
+`https://victoralecrim11.github.io/garimpo-da-vez/` era o endereço do GitHub Pages. Ele pode permanecer acessível durante a transição, mas não deve ser divulgado como principal; qualquer desativação ou redirecionamento precisa ser feita separadamente. Links externos antigos não são atualizados automaticamente.
 
 ## Conteúdo comercial e conformidade
 
@@ -41,4 +49,4 @@ Referências oficiais:
 
 ## Validação básica
 
-Conferir desktop/mobile, navegação interna, favicon e política de privacidade, além dos links externos e ortografia. Validar a URL pública após o deploy e revisar se o link de Pinterest está atualizado.
+Conferir desktop/mobile, navegação interna, favicon e política de privacidade, além dos links externos e ortografia. Validar as rotas na Netlify após cada deploy e revisar se o campo Site no perfil do Pinterest está atualizado.
