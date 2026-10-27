@@ -1,0 +1,37 @@
+# Migração da landing page para Netlify
+
+## Configuração
+
+1. Entre em https://app.netlify.com/start e escolha **Import an existing project** > **GitHub**.
+2. Conceda acesso ao repositorio `victoralecrim11/garimpo-da-vez`.
+3. Selecione a branch `main` **após o merge da PR de configuracao**.
+4. Verifique as configuracoes detectadas de `netlify.toml`: build command `mkdir -p dist && cp index.html dist/ && cp -R assets privacy oauth dist/` e publish directory `dist`.
+5. Publique e teste a URL HTTPS `*.netlify.app` atribuida pelo Netlify.
+
+Nao precisa React, Node.js, NPM ou compilacao de assets. Apenas os seguintes arquivos entram no deploy:
+
+- `index.html`
+- `assets/`
+- `privacy/`
+- `oauth/`
+
+A pasta `automation/`, a pasta `.github/` e arquivos de configuracao/README **nao** sao publicados. Nunca adicionar arquivos privados ou tokens a essas pastas publicas.
+
+## Checklist antes de substituir a URL no Pinterest
+
+- [ ] Verificar `/`, `/privacy/`, `/oauth/callback/` e arquivos `/assets/` na nova URL (o callback sem parametros deve falhar com seguranca).
+- [ ] Verificar responsividade mobile/desktop, menu, links, favicon e tipografia.
+- [ ] Atualizar `og:url` em `index.html` com URL canonica definitiva.
+- [ ] Atualizar `privacy/index.html` para mencionar Netlify como novo provedor de hospedagem e revisar o tratamento de dados tecnicos de acesso.
+- [ ] Na configuracao da aplicacao Mercado Livre, cadastrar o redirect URI HTTPS exato (por exemplo, `https://SEU-SITE.netlify.app/oauth/callback/`) e ajustar a configuracao correspondente no aplicativo Python. Nao presumir que a URL antiga continua autorizada.
+- [ ] Testar o fluxo OAuth Mercado Livre em seu proprio computador, mantendo o listener local em `127.0.0.1:8765`; o callback so encaminha `code` e `state` para esse listener.
+- [ ] Atualizar o link **Site** no Pinterest Business e, se aplicavel, as URLs cadastradas no programa de afiliados.
+- [ ] Verificar conformidade com as politicas de afiliados do Mercado Livre e Pinterest. Identificar publicidade e links comissionados claramente.
+- [ ] Manter o GitHub Pages antigo ate validar que a nova URL funciona; so depois decidir se deseja desativar ou redirecionar.
+
+## Observacoes
+
+- Hospedagem nao gera receita automaticamente: depende do trafego, cliques, compras elegiveis e atribuicao do programa de afiliados.
+- O plano Netlify Free aceita sites comerciais e links de afiliados, sujeito aos termos e limites vigentes de creditos.
+- Netlify tem deploy automatico para cada push na branch de producao apos conectar o repositorio.
+- O conteudo existente usa caminhos relativos, compativeis com hospedagem na raiz do novo dominio.
