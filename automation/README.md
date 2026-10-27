@@ -139,18 +139,16 @@ Referências oficiais: [Pinterest Developer Guidelines](https://policy.pinterest
 
 O script utiliza OAuth 2.0 e PKCE S256. O Client Secret, Access Token e Refresh Token ficam **somente no cofre seguro do sistema operacional** (Windows Credential Manager, macOS Keychain ou SecretService/KWallet no Linux). Nunca gravamos tokens em JSON, .env, GitHub ou GitHub Actions.
 
-**AÇÃO OBRIGATÓRIA NO DEV CENTER ANTES DO LOGIN:** a URI usada inicialmente na criação da aplicação
-(`https://victoralecrim11.github.io/garimpo-da-vez/`) é apenas a página inicial e **não** recebe o código OAuth.
-Em *Minhas aplicações → Garimpo da Vez → Configuração e escopos → URIs de redirect*,
-substitua/adicone a URI de callback abaixo, clique em **Adicionar URI de redirect** quando necessário
-e salve a alteração. O endereço deve ser cadastrado *exatamente*, inclusive a barra final:
+**AÇÃO OBRIGATÓRIA NO DEV CENTER ANTES DO LOGIN:** a aplicação usava o callback antigo do GitHub Pages. Após a migração da hospedagem, a URI oficial de retorno passa a ser **Netlify**.
 
-    https://victoralecrim11.github.io/garimpo-da-vez/oauth/callback/
+Em *Minhas aplicações → Garimpo da Vez → Configuração e escopos → URIs de redirect*, cadastre/salve exatamente este endereço, **inclusive a barra final**:
 
-Depois de salvar, confirme se a página do callback está publicada no GitHub Pages antes de iniciar o login.
+    https://garimpo-da-vez.netlify.app/oauth/callback/
+
+A URI informada ao Mercado Livre na autorização e na troca do código por token deve coincidir exatamente com a cadastrada. Confirme que `https://garimpo-da-vez.netlify.app/oauth/callback/` responde pelo navegador sem parâmetros (mostrará aviso de retorno inválido) e só então execute um novo login local. Não compartilhe URLs de callback contendo `code`/`state`.
 **Não coloque Client Secret, código de autorização, access_token ou refresh_token na página.**
 
-A página HTTPS do GitHub Pages é uma ponte estática: encaminha apenas o código temporário de autorização e o state para o servidor local Python em http://127.0.0.1:8765/callback. O código de autorização transita pelo host GitHub Pages, mas só pode ser resgatado com PKCE e Client Secret locais. Essa é uma solução para **uso pessoal com uma conta**, não para aplicações multiusuário. Para vários usuários, prefira backend HTTPS dedicado e cofre central com controle de acesso.
+A página HTTPS da Netlify é uma ponte estática: encaminha apenas o código temporário de autorização e o state para o servidor local Python em http://127.0.0.1:8765/callback. O código de autorização transita pelo host Netlify, mas só pode ser resgatado com PKCE e Client Secret locais. Essa é uma solução para **uso pessoal com uma conta**, não para aplicações multiusuário. Para vários usuários, prefira backend HTTPS dedicado e cofre central com controle de acesso.
 
 ### Primeiro login (Windows PowerShell)
 
@@ -161,7 +159,7 @@ $env:MERCADOLIVRE_CLIENT_ID = 'SEU_APP_ID'
 py -3 automation/ml_oauth.py login
 ```
 
-Quando não houver `MERCADOLIVRE_CLIENT_SECRET` na sessão do terminal, o script **abre automaticamente o DevCenter** (`https://developers.mercadolivre.com.br/devcenter`) **antes de solicitar** a chave. Entre em *Minhas aplicações → Garimpo da Vez → Editar → Chave secreta*, copie e cole a chave no prompt oculto (nenhum caractere aparece ao colar). O script não consegue ler o Client Secret por API. Depois, abre uma **segunda página** de autorização OAuth para sua conta Mercado Livre. Deixe o terminal aberto: ele escuta apenas `127.0.0.1:8765` e recebe o retorno pelo callback HTTPS. Se o navegador não abrir, os links são exibidos para abertura manual. `--no-browser` **não abre nenhuma das duas páginas**; você deverá abri-las manualmente. Se a variável `MERCADOLIVRE_CLIENT_SECRET` já estiver definida, o DevCenter não será aberto e o fluxo seguirá diretamente à autorização. Nunca compartilhe o secret, tokens ou a URL de retorno contendo `code`. Não use GitHub Pages para processar tokens nem coloque credenciais na página estática.
+Quando não houver `MERCADOLIVRE_CLIENT_SECRET` na sessão do terminal, o script **abre automaticamente o DevCenter** (`https://developers.mercadolivre.com.br/devcenter`) **antes de solicitar** a chave. Entre em *Minhas aplicações → Garimpo da Vez → Editar → Chave secreta*, copie e cole a chave no prompt oculto (nenhum caractere aparece ao colar). O script não consegue ler o Client Secret por API. Depois, abre uma **segunda página** de autorização OAuth para sua conta Mercado Livre. Deixe o terminal aberto: ele escuta apenas `127.0.0.1:8765` e recebe o retorno pelo callback HTTPS. Se o navegador não abrir, os links são exibidos para abertura manual. `--no-browser` **não abre nenhuma das duas páginas**; você deverá abri-las manualmente. Se a variável `MERCADOLIVRE_CLIENT_SECRET` já estiver definida, o DevCenter não será aberto e o fluxo seguirá diretamente à autorização. Nunca compartilhe o secret, tokens ou a URL de retorno contendo `code`. Não use Netlify para processar tokens na página estática nem coloque credenciais na página estática.
 
 ### Consultar, renovar e sair
 
