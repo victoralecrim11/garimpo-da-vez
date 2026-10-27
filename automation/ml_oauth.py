@@ -2,7 +2,7 @@
 """OAuth 2.0 Mercado Livre (Authorization Code + state + PKCE S256).
 
 Inicie o login localmente com: python automation/ml_oauth.py login
-O callback HTTPS do GitHub Pages apenas encaminha code/state ao loopback local.
+O callback HTTPS da Netlify apenas encaminha code/state ao loopback local.
 O secret e os tokens ficam no cofre do sistema operacional via keyring.
 """
 from __future__ import annotations
@@ -29,7 +29,7 @@ import webbrowser
 AUTH_URL = "https://auth.mercadolivre.com.br/authorization"
 TOKEN_URL = "https://api.mercadolibre.com/oauth/token"
 DEVELOPER_APPS_URL = "https://developers.mercadolivre.com.br/devcenter"
-REDIRECT_URI = "https://victoralecrim11.github.io/garimpo-da-vez/oauth/callback/"
+REDIRECT_URI = "https://garimpo-da-vez.netlify.app/oauth/callback/"
 SERVICE = "garimpo-da-vez-mercadolivre-oauth"
 ACCOUNT = "default"
 CALLBACK_PORT = 8765
