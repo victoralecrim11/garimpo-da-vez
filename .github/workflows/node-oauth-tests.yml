@@ -1,0 +1,28 @@
+name: Node OAuth diagnostic tests
+
+on:
+  pull_request:
+    paths:
+      - 'automation/node/**'
+      - '.github/workflows/node-oauth-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'automation/node/**'
+      - '.github/workflows/node-oauth-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run Node OAuth diagnostic unit tests
+        run: node --test automation/node/ml-oauth-smoke.test.mjs
