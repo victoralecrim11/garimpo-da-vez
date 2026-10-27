@@ -1,0 +1,14 @@
+# Netlify publica somente os arquivos publicos da landing page.
+# Os scripts Python em automation/ nao devem fazer parte do deploy.
+[build]
+  command = "mkdir -p dist && cp index.html dist/ && cp -R assets privacy oauth dist/"
+  publish = "dist"
+
+# O callback recebe um codigo temporario OAuth na query string.
+# Nao armazenar nem cachear o retorno de autorizacao.
+[[headers]]
+  for = "/oauth/callback/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    Referrer-Policy = "no-referrer"
+    X-Content-Type-Options = "nosniff"
